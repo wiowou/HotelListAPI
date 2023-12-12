@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  sqlserver:
+    container_name: bk-sqlserver
+    hostname: bk-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-CU9-ubuntu-20.04
+    networks:
+      - default
+    env_file:
+      - .env
+    environment:
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+      TZ: America/New_York
+      SQL_USER: ${DB_USERNAME}
+      SQL_DB: ${DB_DATABASE_NAME}
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/mssql-tools/bin
+    ports:
+      - 1433:1433
+    volumes:
+      - ./mssql/data:/var/opt/mssql/data
+      - ./mssql/log:/var/opt/mssql/log
+      - ./mssql/secrets:/var/opt/mssql/secrets
+
